@@ -1,4 +1,4 @@
-# Text2Hex
+# PlainText2Hex
 
 ## About <a name = "about"></a>
 
