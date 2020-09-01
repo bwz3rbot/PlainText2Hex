@@ -38,5 +38,5 @@ const textToHex = function (text, confuse) {
 textToConvert = 
 "javascript:alert('xss')"
 
-let converted = textToHex(textToConvert,true)
+let converted = textToHex(textToConvert,false)
 console.log(converted)
