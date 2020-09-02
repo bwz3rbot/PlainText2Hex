@@ -3,7 +3,11 @@
 // Converts text to hexadecimal values, then adds html entity prefix and semi-colon suffix.
 // The return value can then be passed as a query param to bypass filtering.
 
-const textToHex = function (text, confuse) {
+const clipboardy = require('clipboardy'),
+    colors = require('colors');
+
+
+const textToHex = function (text, confuse = true, hex = false) {
     var bytes = [];
     for (var i = 0; i < text.length; i++) {
         var realBytes = unescape(encodeURIComponent(text[i]));
@@ -22,11 +26,14 @@ const textToHex = function (text, confuse) {
             hexByte = '0' + hexByte;
         }
         var char = textToHexFormat;
-        if (i > 0 && !confuse) {
+        if (i > 0 && !confuse && !hex) {
             hexByte = " " + hexByte
         }
         if (confuse) {
             hexByte = "&#x" + hexByte + ';'
+        }
+        if (hex) {
+            hexByte = "%" + hexByte + ';'
         }
 
         char = char.replace(/%x/g, hexByte);
@@ -35,8 +42,14 @@ const textToHex = function (text, confuse) {
     return converted;
 };
 
-textToConvert = 
-"javascript:alert('xss')"
+textToConvert = "javascript:alert('hello')"
+if (process.argv[2]) {
+    textToConvert = process.argv[2]
+}
 
-let converted = textToHex(textToConvert,false)
-console.log(converted)
+
+
+console.log(`${textToConvert}`.green)
+hexed = textToHex(textToConvert)
+clipboardy.writeSync(hexed)
+console.log(hexed.red)
